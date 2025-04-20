@@ -1,0 +1,83 @@
+<!-- livebook:{"autosave_interval_s":60} -->
+
+# PLSQL
+
+```elixir
+Mix.install([
+  {:ecto_sql, "~> 3.12.1"},
+  {:jamdb_oracle, "~> 0.5.11"},
+  ],
+  config: Config.Reader.read!("#{__DIR__}/oracle_elixir/config/config.exs")
+)
+```
+
+## Repo
+
+```elixir
+defmodule Oracle.Repo do
+  use Ecto.Repo,
+    otp_app: :oracle_elixir,
+    adapter: Ecto.Adapters.Jamdb.Oracle
+end
+```
+
+## Application
+
+```elixir
+defmodule OracleElixir do
+  @moduledoc """
+  Documentation for `OracleElixir`.
+  """
+
+  @doc """
+  Hello world.
+
+  ## Examples
+
+      iex> OracleElixir.hello()
+      :world
+
+  """
+  def hello do
+    :world
+  end
+end
+
+```
+
+```elixir
+defmodule OracleElixir.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  @impl true
+  def start(_type, _args) do
+    children = [
+      # Starts a worker by calling: OracleElixir.Worker.start_link(arg)
+      # {OracleElixir.Worker, arg}
+      Oracle.Repo
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: OracleElixir.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+
+```
+
+```elixir
+t = 1
+v = 1
+OracleElixir.Application.start(t,v)
+```
+
+## SQL
+
+```elixir
+Ecto.Adapters.SQL.query(Oracle.Repo, "select * from countries ")
+```
