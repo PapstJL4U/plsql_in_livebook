@@ -9,6 +9,19 @@ Mix.install([
   ],
   config: Config.Reader.read!("#{__DIR__}/oracle_elixir/config/config.exs")
 )
+
+# config.exs looks like this
+# import Config
+# config :oracle_elixir, Oracle.Repo,
+#  url: "ecto://hr:oracle@192.168.2.113:1521/freepdb1",
+#  OR
+#  #database: "freepdb1",
+#  #username: "hr",
+#  #password: "oracle",
+#  #hostname: "192.168.2.113",
+#  #port: 1521,
+#  ecto_repos: [Oracle.Repo]
+
 ```
 
 ## Repo
@@ -71,13 +84,17 @@ end
 ```
 
 ```elixir
-t = 1
-v = 1
-OracleElixir.Application.start(t,v)
+type = []
+args = []
+OracleElixir.Application.start(type,args)
 ```
 
 ## SQL
 
 ```elixir
-Ecto.Adapters.SQL.query(Oracle.Repo, "select * from countries ")
+alias Ecto.Adapters.SQL, as: SQL
+```
+
+```elixir
+SQL.query(Oracle.Repo, "select * from countries")
 ```
