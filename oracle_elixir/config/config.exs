@@ -6,5 +6,6 @@ config :oracle_elixir, Oracle.Repo,
   username: "hr",
   password: "oracle",
   hostname: "192.168.2.113",
+  #hostname: "localhost",
   port: 1521,
   ecto_repos: [Oracle.Repo]
